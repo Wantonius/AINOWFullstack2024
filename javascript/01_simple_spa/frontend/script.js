@@ -81,11 +81,18 @@ addShoppingItem = async () => {
 		},
 		body:JSON.stringify(item)
 	}
+	if(mode) {
+		url = "/api/shopping/"+mode
+		request.method = "PUT"
+	}
 	const response = await fetch(url,request);
 	if(response.ok) {
 		typeInput.value = "";
 		countInput.value = "";
 		priceInput.value = "";
+		const submitButton = document.getElementById("submitbutton");
+		submitButton.value = "Add";
+		mode = 0;
 		getShoppingList();
 	} else {
 		console.log("Server responded with a status "+response.status+" "+response.statusText)
@@ -103,6 +110,31 @@ getShoppingList = async () => {
 		}
 		
 	}
+}
+
+removeItem = async (id) => {
+	const url = "/api/shopping/"+id
+	const request = {
+		method:"DELETE"
+	}
+	const response = await fetch(url,request)
+	if(response.ok) {
+		getShoppingList();
+	} else {
+		console.log("Server responded with a status "+response.status+" "+response.statusText)
+	}
+}
+
+editItem = (item) => {
+	const typeInput = document.getElementById("type");
+	const countInput = document.getElementById("count");
+	const priceInput = document.getElementById("price");
+	typeInput.value = item.type;
+	countInput.value = item.count;
+	priceInput.value = item.price;
+	mode = item.id;
+	const submitButton = document.getElementById("submitbutton");
+	submitButton.value = "Save";
 }
 
 populateTable = (list) => {
