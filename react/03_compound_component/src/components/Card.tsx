@@ -12,6 +12,18 @@ const Card = () => {
 		color:"red"
 	})
 	
+	const onColorChange = () => {
+		let color:string = "#";
+		const letters:string = "ABCDEF1234567890";
+		for(let i=0;i<6;i++) {
+			let temp = Math.floor(Math.random()*16)
+			color = color + letters[temp]
+		}
+		setState({
+			color:color
+		})
+	}
+	
 	const cardStyle:React.CSSProperties = {
 		height:200,
 		width:150,
@@ -22,7 +34,7 @@ const Card = () => {
 	return(
 		<div style={cardStyle}>
 			<Square color={state.color}/>
-			<Label color={state.color}/>
+			<Label color={state.color} onColorChange={onColorChange}/>
 		</div>
 	)
 }

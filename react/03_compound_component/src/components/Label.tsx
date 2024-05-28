@@ -2,6 +2,7 @@ import React from 'react';
 
 interface Props {
 	color:string;
+	onColorChange():void;
 }
 
 const Label = (props:Props) => {
@@ -13,7 +14,7 @@ const Label = (props:Props) => {
 	}
 	
 	return(
-		<p style={labelStyle}>{props.color}</p>
+		<p style={labelStyle} onClick={props.onColorChange}>{props.color}</p>
 	)
 }
 
