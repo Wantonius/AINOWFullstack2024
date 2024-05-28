@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import Contact from './models/Contact';
 import ContactForm from './components/ContactForm';
+import ContactList from './components/ContactList';
 
 interface State {
 	list:Contact[];
@@ -37,6 +38,8 @@ function App() {
 	return (
 		<>
 			<ContactForm addContact={addContact}/>
+			<hr/>
+			<ContactList list={state.list} removeContact={removeContact}/>
 		</>
 	)
 }
