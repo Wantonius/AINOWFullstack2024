@@ -21,6 +21,10 @@ const useAction = () => {
 		action:""
 	})
 	
+	useEffect(() => {
+		getList();
+	},[])
+	
 	//Fetch stuff from backend
 	
 	useEffect(() => {
