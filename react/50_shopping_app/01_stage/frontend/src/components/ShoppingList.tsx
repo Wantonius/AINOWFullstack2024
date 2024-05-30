@@ -46,6 +46,49 @@ const ShoppingList = (props:Props) => {
 				return;
 		}
 	}
+	
+	const removeItem = (id:number) => {
+		props.remove(id);
+		changeMode("cancel",0);
+	}
+	
+	const editItem = (item:ShoppingItem) => {
+		props.edit(item);
+		changeMode("cancel",0);
+	}
+	
+	const shoppingItems = props.list.map((item,index) => {
+		if(state.removeIndex === index) {
+			return(
+				<RemoveRow key={item.id} item={item} changeMode={changeMode} removeItem={removeItem}/>
+			)
+		}
+		if(state.editIndex === index) {
+			return(
+				<EditRow key={item.id} item={item} changeMode={changeMode} editItem={editItem}/>
+			)
+		}
+		return(
+			<Row key={item.id} item={item} index={index} changeMode={changeMode}/>
+		)
+	})
+	
+	return(
+		<table className="table table-striped">
+			<thead>
+				<tr>
+					<th>Type</th>
+					<th>Count</th>
+					<th>Price</th>
+					<th>Remove</th>
+					<th>Edit</th>
+				</tr>
+			</thead>
+			<tbody>
+			{shoppingItems}
+			</tbody>
+		</table>
+	)
 }
 
 export default ShoppingList;
