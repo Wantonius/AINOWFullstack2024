@@ -39,27 +39,32 @@ router.post("/shopping",function(req,res) {
 })
 
 router.delete("/shopping/:id",function(req,res) {
-	let tempId = parseInt(req.params.id);
-	let tempDatabase = database.filter(item => item.id !== tempId);
-	database = tempDatabase;
-	return res.status(200).json({"Message":"Success"});
+	itemModel.deleteOne({"_id":req.params.id}).then(function(){
+		return res.status(200).json({"Message":"Success"})
+	}).catch(function(err) {
+		console.log("Failed to remove item, Reason",err);
+		return res.status(500).json({"Message":"Internal server error"});
+	})
 })
 
 router.put("/shopping/:id",function(req,res) {
-	let tempId = parseInt(req.params.id);
+	if(!req.body) {
+		return res.status(400).json({"Message":"Bad request"})
+	}
+	if(!req.body.type) {
+		return res.status(400).json({"Message":"Bad request"})
+	}
 	let item = {
 		type:req.body.type,
 		count:req.body.count,
-		price:req.body.price,
-		id:tempId
+		price:req.body.price
 	}
-	for(let i=0;i<database.length;i++) {
-		if(database[i].id === tempId) {
-			database.splice(i,1,item);
-			return res.status(200).json({"Message":"Success"})
-		}
-	}
-	return res.status(404).json({"Message":"Not Found"});
+	itemModel.replaceOne({"_id":req.params.id},item).then(function(){
+		return res.status(200).json({"Message":"Success"})
+	}).catch(function(err) {
+		console.log("Failed to edit item, Reason",err);
+		return res.status(500).json({"Message":"Internal server error"});
+	})
 })
 
 module.exports = router;
