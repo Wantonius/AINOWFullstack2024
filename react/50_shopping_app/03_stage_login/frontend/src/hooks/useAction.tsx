@@ -1,11 +1,7 @@
 import {useState,useEffect} from 'react';
 import ShoppingItem from '../models/ShoppingItem';
-
-//Application state
-interface State {
-	list:ShoppingItem[];
-}
-
+import User from '../models/User';
+import {AppState} from '../types/states';
 //Used by helper functions to trigger useEffect and fetching from backend
 
 interface UrlRequest {
@@ -13,10 +9,19 @@ interface UrlRequest {
 	action:string;
 }
 
+interface Token {
+	token:string;
+}
+
 const useAction = () => {
 	
-	const [state,setState] = useState<State>({
+	const [state,setState] = useState<AppState>({
 		list:[]
+		isLogged:false,
+		token:"",
+		loading:false,
+		error:"",
+		user:""
 	})
 	
 	const [urlRequest,setUrlRequest] = useState<UrlRequest>({
@@ -24,9 +29,54 @@ const useAction = () => {
 		action:""
 	})
 	
+	//STATE HELPERS
+	
+	const saveToStorage = (state:AppState) => {
+		sessionStorage.setItem("state",JSON.stringify(state));
+	}
+	
 	useEffect(() => {
-		getList();
+		let temp = sessionStorage.getItem("state");
+		if(temp) {
+			let state:AppState = JSON.parse(temp);
+			setState(state);
+			if(state.isLogged) {
+				getList(state.token);
+			}
+		}
 	},[]);
+	
+	const setLoading = (loading:boolean) => {
+		setState((state) => {
+			return {
+				...state,
+				loading:loading,
+				error:""
+			}
+		})
+	}
+	
+	const setError = (error:string) => {
+		setState((state) => {
+			let tempState = {
+				...state,
+				error:error
+			}
+			saveToStorage(tempState);
+			return tempState;
+		})
+	}
+	
+	const setUser = (user:string) => {
+		setState((state) => {
+			let tempState = {
+				...state,
+				user:user
+			}
+			saveToStorage(tempState);
+			return tempState;
+		})
+	}
 	
 	//Fetch stuff from backend using urlRequest and useEffect()
 
