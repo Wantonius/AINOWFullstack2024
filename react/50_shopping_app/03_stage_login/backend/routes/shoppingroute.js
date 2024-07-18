@@ -6,7 +6,6 @@ const router = express.Router();
 //REST API
 
 router.get("/shopping",function(req,res) {
-	console.log(req.session);
 	let query = {"user":req.session.user}
 	itemModel.find(query).then(function(items) {
 		return res.status(200).json(items);

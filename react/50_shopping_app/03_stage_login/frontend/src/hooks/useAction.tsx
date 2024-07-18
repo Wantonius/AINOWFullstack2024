@@ -16,7 +16,7 @@ interface Token {
 const useAction = () => {
 	
 	const [state,setState] = useState<AppState>({
-		list:[]
+		list:[],
 		isLogged:false,
 		token:"",
 		loading:false,
@@ -206,7 +206,7 @@ const useAction = () => {
 		})
 	}
 	
-	const remove = (id:number) => {
+	const remove = (id:string) => {
 		setUrlRequest({
 			request:new Request("/api/shopping/"+id,{
 				method:"DELETE",
@@ -271,7 +271,7 @@ const useAction = () => {
 		})
 	}
 	
-	return {state,add,remove,edit,register,login,logout}
+	return {state,add,remove,edit,register,login,logout,setError}
 }
 
 export default useAction;
