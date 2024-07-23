@@ -1,4 +1,5 @@
 import ShoppingItem from '../models/ShoppingItem';
+import {AnyAction,Reducer} from 'redux';
 
 export interface LoginState {
 	isLogged:boolean;
@@ -16,4 +17,9 @@ export interface ShoppingState {
 export interface AppState {
 	login:LoginState;
 	shopping:ShoppingState;
+}
+
+export interface RootReducer {
+	login:Reducer<LoginState,AnyAction>;
+	shopping:Reducer<ShoppingState,AnyAction>;
 }
