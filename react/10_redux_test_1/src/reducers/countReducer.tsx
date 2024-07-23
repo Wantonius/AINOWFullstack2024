@@ -1,4 +1,4 @@
-import {AnyAction,Reducer} from 'redux';
+import {PayloadAction,Reducer} from 'redux';
 
 export interface State {
 	count:number;
@@ -8,7 +8,7 @@ const initialState:State = {
 	count:0
 }
 
-const countReducer:Reducer<State,AnyAction> = (state = initialState,action) => {
+const countReducer:Reducer<State,PayloadAction> = (state = initialState,action) => {
 	console.log(action);
 	switch(action.type) {
 		case "INCREMENT":
