@@ -2,6 +2,7 @@ import * as actionConstants from '../types/actionConstants';
 import User from '../models/User';
 import {ThunkDispatch} from 'redux-thunk';
 import {AnyAction} from 'redux';
+import {getList} from './shoppingActions';
 
 interface Token {
 	token:string;
@@ -27,6 +28,7 @@ export const login = (user:User) => {
 			headers:{"Content-Type":"application/json"},
 			body:JSON.stringify(user)
 		})
+		dispatch(setUser(user.username));
 		handleLogin(request,"login",dispatch);
 	}	
 }
@@ -62,7 +64,7 @@ const handleLogin = async (request:Request,act:string,dispatch:ThunkDispatch<any
 				}
 				let data = temp as Token;
 				dispatch(loginSuccess(data.token));
-				//TODO: getList from shopping actions!
+				dispatch(getList(data.token));
 				return;
 			case "logout":
 				dispatch(logoutSuccess());
@@ -84,7 +86,7 @@ const handleLogin = async (request:Request,act:string,dispatch:ThunkDispatch<any
 				dispatch(loginFailed("Login failed. "+errorMessage));
 				return;
 			case "logout":
-				dispatch(logoutFailed("Server responded with an error. Logging you out.");
+				dispatch(logoutFailed("Server responded with an error. Logging you out."));
 				return;
 			default:
 				return;

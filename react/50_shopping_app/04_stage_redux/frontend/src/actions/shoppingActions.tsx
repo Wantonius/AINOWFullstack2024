@@ -60,7 +60,62 @@ export const edit = (token:string,item:ShoppingItem) => {
 }
 
 const handleFetch = async (request:Request,act:string,dispatch:ThunkDispatch<any,any,AnyAction>,token:string) => {
-	
+	dispatch(loading());
+	const response = await fetch(request);
+	dispatch(stopLoading());
+	if(!response) {
+		dispatch(logoutFailed("Server never responded. Logging you out."));
+		return;
+	}
+	if(response.ok) {
+		switch(act) {
+			case "getlist":
+				let temp = await response.json();
+				if(!temp) {
+					dispatch(fetchListFailed("Failed to parse shopping information. Try again later."));
+					return;
+				}
+				let list = temp as ShoppingItem[];
+				dispatch(fetchListSuccess(list));
+				return;
+			case "additem":
+				dispatch(fetchItemSuccess(actionConstants.ADD_ITEM_SUCCESS));
+				dispatch(getList(token));
+				return;
+			case "removeitem":
+				dispatch(fetchItemSuccess(actionConstants.REMOVE_ITEM_SUCCESS));
+				dispatch(getList(token));
+				return;
+			case "edititem":
+				dispatch(fetchItemSuccess(actionConstants.EDIT_ITEM_SUCCESS));
+				dispatch(getList(token));
+				return;			
+			default:
+				return;
+		}
+	} else {
+		if(response.status === 403) {
+			dispatch(logoutFailed("Your session has expired. Logging you out."));
+			return;
+		}
+		let errorMessage = " Server responded with a status "+response.status+" "+response.statusText
+		switch(act) {
+			case "getlist":
+				dispatch(fetchListFailed("Failed to fetch shopping information."+errorMessage));
+				return;
+			case "additem":
+				dispatch(fetchItemFailed(actionConstants.ADD_ITEM_FAILED,"Failed to add new item."+errorMessage));
+				return;
+			case "removeitem":
+				dispatch(fetchItemFailed(actionConstants.REMOVE_ITEM_FAILED,"Failed to remove item."+errorMessage));
+				return
+			case "edititem":
+				dispatch(fetchItemFailed(actionConstants.EDIT_ITEM_FAILED,"Failed to edit item."+errorMessage));
+				return;
+			default:
+				return;
+		}
+	}
 	
 }
 //ACTION CREATORS
