@@ -29,7 +29,7 @@ export const add = createAsyncThunk("add", async (item:ShoppingItem,thunkAPI) =>
 		thunkAPI.dispatch(getList());
 	}
 	return {"Message":"Success"}
-}
+})
 
 export const remove = createAsyncThunk("remove",async (id:number,thunkAPI) => {
 	const request = new Request("/api/shopping/"+id,{
