@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import ShoppingItem from '../models/ShoppingItem';
+import useAction from '../hooks/useAction';
 
 interface State {
 	type:string;
@@ -7,11 +8,8 @@ interface State {
 	price:number;
 }
 
-interface Props {
-	add(item:ShoppingItem):void;
-}
 
-const ShoppingForm = (props:Props) => {
+const ShoppingForm = () => {
 	
 	const [state,setState] = useState<State>({
 		type:"",
@@ -19,6 +17,8 @@ const ShoppingForm = (props:Props) => {
 		price:0
 	})
 	
+	const {add} = useAction();
+ 	
 	const onChange = (event:React.ChangeEvent<HTMLInputElement>) =>  {
 		setState((state) => {
 			return {
@@ -31,7 +31,7 @@ const ShoppingForm = (props:Props) => {
 	const onSubmit = (event:React.SyntheticEvent) => {
 		event.preventDefault();
 		let item = new ShoppingItem(state.type,state.count,state.price,0);
-		props.add(item);
+		add(item);
 		setState({
 			type:"",
 			count:0,

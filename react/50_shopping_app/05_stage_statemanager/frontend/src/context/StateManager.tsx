@@ -68,7 +68,7 @@ const listReducer = (state:AppState,action:Action):AppState => {
 			tempState = {
 				list:[],
 				isLogged:false,
-				token:"";
+				token:"",
 				loading:false,
 				error:"",
 				user:""
@@ -115,7 +115,7 @@ const listReducer = (state:AppState,action:Action):AppState => {
 		case actionConstants.EDIT_ITEM_FAILED:
 			tempState = {
 				...state,
-				error:action.payload as error
+				error:action.payload as error	
 			}
 			saveToStorage(tempState);
 			return tempState;

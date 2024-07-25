@@ -95,7 +95,7 @@ const useAction = () => {
 						let temp2 = await response.json();
 						let data = temp2 as Token;
 						dispatch({
-							type:actionConstants.LOGIN_SUCCESS:
+							type:actionConstants.LOGIN_SUCCESS,
 							payload:data.token
 						})
 						return;
@@ -110,7 +110,10 @@ const useAction = () => {
 				}
 			} else {
 				if(response.status === 403) {
-					clearState("Your session has expired!");
+					dispatch({
+						type:actionConstants.LOGOUT_FAILED,
+						payload:"Your session has expired."
+					})
 					return;
 				}
 				let errorMessage = "Server responded with a status "+response.status+" "+response.statusText
@@ -119,17 +122,46 @@ const useAction = () => {
 						if(response.status === 409) {
 							errorMessage = "Username already in use";
 						}
-						setError(errorMessage);
+						dispatch({
+							type:actionConstants.REGISTER_FAILED,
+							payload:errorMessage
+						})
 						return;
 					case "login":
+						dispatch({
+							type:actionConstants.LOGIN_FAILED,
+							payload:errorMessage
+						})
+						return;
 					case "getlist":
+						dispatch({
+							type:actionConstants.FETCH_LIST_FAILED,
+							payload:errorMessage
+						})
+						return;
 					case "additem":
+						dispatch({
+							type:actionConstants.ADD_ITEM_FAILED,
+							payload:errorMessage
+						})
+						return;
 					case "removeitem":
+						dispatch({
+							type:actionConstants.REMOVE_ITEM_FAILED,
+							payload:errorMessage
+						})
+						return;
 					case "edititem":
-						setError(errorMessage);
+						dispatch({
+							type:actionConstants.EDIT_ITEM_FAILED,
+							payload:errorMessage
+						})
 						return;
 					case "logout":
-						clearState("Server responded with an error. Logging you out.");
+						dispatch({
+							type:actionConstants.LOGOUT_FAILED,
+							payload:"Server responded with an error. Logging you out."
+						})
 						return;
 					default:
 						return;
@@ -161,7 +193,7 @@ const useAction = () => {
 				method:"POST",
 				headers:{
 					"Content-Type":"application/json",
-					"token":state.token
+					"token":token
 				},
 				body:JSON.stringify(item)
 			}),
@@ -174,7 +206,7 @@ const useAction = () => {
 			request:new Request("/api/shopping/"+id,{
 				method:"DELETE",
 				headers:{
-					"token":state.token
+					"token":token
 				}
 			}),
 			action:"removeitem"
@@ -187,7 +219,7 @@ const useAction = () => {
 				method:"PUT",
 				headers:{
 					"Content-Type":"application/json",
-					"token":state.token
+					"token":token
 				},
 				body:JSON.stringify(item)
 			}),
@@ -209,7 +241,10 @@ const useAction = () => {
 	}
 
 	const login = (user:User) => {
-		setUser(user.username);
+		dispatch({
+			type:actionConstants.SET_USER,
+			payload:user.username
+		})
 		setUrlRequest({
 			request:new Request("/login",{
 				method:"POST",
@@ -227,14 +262,14 @@ const useAction = () => {
 			request:new Request("/logout",{
 				method:"POST",
 				headers:{
-					"token":state.token
+					"token":token
 				}
 			}),
 			action:"logout"
 		})
 	}
 	
-	return {state,add,remove,edit,register,login,logout,setError}
+	return {getList,add,remove,edit,register,login,logout,setError}
 }
 
 export default useAction;
