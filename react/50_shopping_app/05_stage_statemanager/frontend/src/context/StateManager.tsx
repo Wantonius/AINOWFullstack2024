@@ -33,7 +33,7 @@ const saveToStorage = (state:AppState) => {
 const initialState = getInitialState();
 
 const listReducer = (state:AppState,action:Action) => {
-	
+	return state;
 }
 
 const StateManager = (props:Props) => {
