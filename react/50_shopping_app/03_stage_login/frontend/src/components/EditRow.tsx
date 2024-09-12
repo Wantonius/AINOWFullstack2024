@@ -21,7 +21,7 @@ const EditRow = (props:Props) => {
 		price:props.item.price
 	})
 	
-	const onChange = (event:React.ChangeEvent<HMTLInputElement>) => {
+	const onChange = (event:React.ChangeEvent<HTMLInputElement>) => {
 		setState((state) => {
 			return {
 				...state,
