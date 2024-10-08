@@ -17,7 +17,64 @@ const GreetingForm = (props) => {
 		props.setGreeting(data);
 		props.navigation.navigate("GreetingPage");
 	}
-	
+	return(
+		<View style={styles.container}>
+			<View style={styles.row}>
+				<Text>First name:</Text>
+				<TextInput style={styles.textInput}
+					onChangeText={(text) => {
+						setState((state) => {
+							return {
+								...state,
+								firstname:text
+							}
+						})
+					}}/>
+			</View>
+			<View style={styles.row}>
+				<Text>Last name:</Text>
+				<TextInput style={styles.textInput}
+					onChangeText={(text) => {
+						setState((state) => {
+							return {
+								...state,
+								lastname:text
+							}
+						})
+					}}/>
+			</View>
+			<View style={styles.row}>
+				<Text>Text color:</Text>
+				<TextInput style={styles.textInput}
+					onChangeText={(text) => {
+						setState((state) => {
+							return {
+								...state,
+								textColor:text
+							}
+						})
+					}}/>
+			</View>
+			<View style={styles.row}>
+				<Text>Background Color:</Text>
+				<TextInput style={styles.textInput}
+					onChangeText={(text) => {
+						setState((state) => {
+							return {
+								...state,
+								backgroundColor:text
+							}
+						})
+					}}/>
+			</View>
+			<View style={[styles.row,styles.buttonRow]}>
+				<Pressable style={styles.button}
+						onPress={setGreeting}>
+					<Text>Set Greeting</Text>
+				</Pressable>
+			</View>
+		</View>
+	)
 }
 
 const styles = StyleSheet.create({
