@@ -113,7 +113,61 @@ const useAction = () => {
 						
 				}
 			} else {
-				
+				if(response.status === 403) {
+					dispatch({
+						type:actionConstants.LOGOUT
+					})
+					return;
+				}
+				let errorMessage = "Server responded with a status "+response.status+" "+response.statusText
+				switch(urlRequest.action) {
+					case "register":
+						if(response.status === 409) {
+							errorMessage = "Username already in use"
+						}
+						dispatch({
+							type:actionConstants.REGISTER_FAILED,
+							error:errorMessage
+						})
+						return;
+					case "logout": 
+						dispatch({
+							type:actionConstants.LOGOUT
+						})
+						return;
+					case "login":
+						dispatch({
+							type:actionConstants.LOGIN_FAILED,
+							error:errorMessage
+						})
+						return;
+					case "getlist":
+						dispatch({
+							type:actionConstants.FETCH_LIST_FAILED,
+							error:errorMessage
+						})
+						return;
+					case "additem":
+						dispatch({
+							type:actionConstants.ADD_ITEM_FAILED,
+							error:errorMessage
+						})
+						return;
+					case "removeitem":
+						dispatch({
+							type:actionConstants.REMOVE_ITEM_FAILED,
+							error:errorMessage
+						})
+						return;
+					case "edititem":
+						dispatch({
+							type:actionConstants.EDIT_ITEM_FAILED,
+							error:errorMessage
+						})
+						return;
+					default:
+						return;
+				}
 			}
 		}
 		
