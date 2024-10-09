@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 		padding:3,
 		width:70,
 		height:50,
-		backgroundColor:"red"
+		backgroundColor:"red",
 		alignItems:"center",
 		justifyContent:"center"
 	},
