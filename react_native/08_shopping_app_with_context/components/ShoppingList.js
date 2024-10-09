@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 	},
 	buttonBox:{
 		flex:1,
-		flexDirection:"row"
+		flexDirection:"row",
 		justifyContent:"space-evenly",
 		alignItems:"center"
 	},

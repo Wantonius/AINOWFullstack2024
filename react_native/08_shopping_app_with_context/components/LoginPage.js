@@ -20,7 +20,7 @@ const LoginPage = (props) => {
 	
 	const onLogin = () => {
 		let user = {
-			....state
+			...state
 		}
 		login(user);
 	}

@@ -211,7 +211,7 @@ const useAction = () => {
 			request:{
 				method:"POST",
 				headers:{
-					"Content-Type":"application/json"
+					"Content-Type":"application/json",
 					"token":token
 				}
 			},

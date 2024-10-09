@@ -78,7 +78,7 @@ const listReducer = (state,action) => {
 			}
 		case actionConstants.CHANGE_MODE:
 			return {
-				..state,
+				...state,
 				mode:action.mode,
 				editable:action.editable
 			}
@@ -92,7 +92,7 @@ const StateProvider = (props) => {
 	const [state,dispatch] = useReducer(listReducer,initialState);
 	
 	return(
-		<AppStateContext.Provider value={state}
+		<AppStateContext.Provider value={state}>
 			<ActionContext.Provider value={{dispatch:dispatch}}>
 				{props.children}
 			</ActionContext.Provider>
